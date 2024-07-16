@@ -192,7 +192,7 @@ provisioning_start
 
 ###########
 ######  Textual Inversions  ######
-# Textual Inversions
+mkdir {WORKSPACE}/storage/stable_diffusion/embeddings
 cd {WORKSPACE}/storage/stable_diffusion/embeddings
 
 # NG Deep Negative
