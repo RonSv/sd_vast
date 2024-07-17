@@ -13,6 +13,7 @@ PIP_PACKAGES=(
 )
 
 EXTENSIONS=(
+    "https://github.com/lobehub/sd-webui-lobe-theme"
     "https://github.com/Mikubill/sd-webui-controlnet"
     #"https://github.com/d8ahazard/sd_dreambooth_extension"
     #"https://github.com/deforum-art/sd-webui-deforum"
@@ -25,24 +26,30 @@ EXTENSIONS=(
 )
 
 CHECKPOINT_MODELS=(
-    "https://civitai.com/api/download/models/290640?type=Model&format=SafeTensor&size=pruned&fp=fp16"
+#Pony
+    #"https://civitai.com/api/download/models/290640?type=Model&format=SafeTensor&size=pruned&fp=fp16"
+    #Juggern
     "https://civitai.com/api/download/models/198530?type=Model&format=SafeTensor&size=full&fp=fp16"
+    #JuggerXL_inpaint
+    "https://civitai.com/api/download/models/288402?type=Model&format=SafeTensor&size=pruned&fp=fp16"
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
-    "https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
+    #"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
 )
 
 LORA_MODELS=(
-    "https://civitai.com/api/download/models/566041?type=Model&format=SafeTensor"
-    "https://civitai.com/api/download/models/204327?type=Model&format=SafeTensor"
-    "https://civitai.com/api/download/models/62833?type=Model&format=SafeTensor"
-    "https://civitai.com/api/download/models/123732?type=Model&format=SafeTensor"
+    #Wholesome MLP Mix (Pony V6 XL)
+    #"https://civitai.com/api/download/models/566041?type=Model&format=SafeTensor"
+    #KK | Cartoon Saloon Style SDXL
+    #"https://civitai.com/api/download/models/204327?type=Model&format=SafeTensor"
+    #"https://civitai.com/api/download/models/62833?type=Model&format=SafeTensor"
+    #"https://civitai.com/api/download/models/123732?type=Model&format=SafeTensor"
     "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors"
 )
 
 VAE_MODELS=(
-    "https://civitai.com/api/download/models/290640?type=VAE&format=SafeTensor"
+    #"https://civitai.com/api/download/models/290640?type=VAE&format=SafeTensor"
     "https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors"
     "https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors"
     "https://huggingface.co/stabilityai/sdxl-vae/resolve/main/sdxl_vae.safetensors"
@@ -52,8 +59,8 @@ VAE_MODELS=(
 ESRGAN_MODELS=(
     "https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth"
     "https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x-UltraSharp.pth"
-    "https://huggingface.co/FacehugmanIII/4x_foolhardy_Remacri/resolve/main/4x_foolhardy_Remacri.pth"
-    "https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_NMKD-Siax_200k.pth"
+    #"https://huggingface.co/FacehugmanIII/4x_foolhardy_Remacri/resolve/main/4x_foolhardy_Remacri.pth"
+    #"https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_NMKD-Siax_200k.pth"
 )
 
 CONTROLNET_MODELS=(
@@ -75,6 +82,10 @@ CONTROLNET_MODELS=(
     "https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_style-fp16.safetensors"
 )
 
+EMBEDDINGS_MODELS=(
+    "https://civitai.com/api/download/models/5637"
+    "https://civitai.com/api/download/models/9208"
+)
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
@@ -103,6 +114,9 @@ function provisioning_start() {
     provisioning_get_models \
         "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
         "${ESRGAN_MODELS[@]}"
+    provisioning_get_models \
+        "${WORKSPACE}/storage/stable_diffusion/models/embeddings" \
+        "${EMBEDDINGS_MODELS[@]}"
      
     PLATFORM_FLAGS=""
     if [[ $XPU_TARGET = "CPU" ]]; then
@@ -190,13 +204,3 @@ function provisioning_download() {
 provisioning_start
 
 
-###########
-######  Textual Inversions  ######
-mkdir {WORKSPACE}/storage/stable_diffusion/embeddings
-cd {WORKSPACE}/storage/stable_diffusion/embeddings
-
-# NG Deep Negative
-wget https://civitai.com/api/download/models/5637 --content-disposition
-
-# EasyNegative
-wget https://civitai.com/api/download/models/9208 --content-disposition
